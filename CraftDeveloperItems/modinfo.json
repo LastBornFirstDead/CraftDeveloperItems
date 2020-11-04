@@ -1,0 +1,13 @@
+{
+  "name": "Craft Dev Items",
+  "author": "TheZyga",
+  "description": "This mod adds recipes for Developer Hat, Beach Ball, and OP Weapon! All completely unobtainable items in the vanilla game!",
+  "version": "1.0",
+  "license": "GNU AGPLv3",
+  "icon": "icon.png",
+  "banner": "banner.jpg",
+  "gameVersion": "12.01",
+  "updateUrl": "https://www.raftmodding.com/api/v1/mods/craftdevitems/version.txt",
+  "isModPermanent": true,
+  "excludedFiles": []
+}
