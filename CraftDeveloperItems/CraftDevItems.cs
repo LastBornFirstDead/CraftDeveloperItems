@@ -8,78 +8,34 @@ public class CraftDevItems : Mod
 {
     public void Start()
     {
-        CreateRecipe(ItemManager.GetItemByName("DevSpear"), 1);
-        CreateRecipe1(ItemManager.GetItemByName("BeachBall"), 1);
-        CreateRecipe2(ItemManager.GetItemByName("DevHat"), 1);
+        Item_Base[] metalItem = new Item_Base[] { ItemManager.GetItemByName("MetalIngot") };
+        Item_Base[] copperItem = new Item_Base[] { ItemManager.GetItemByName("CopperIngot") };
+        Item_Base[] titaniumItem = new Item_Base[] { ItemManager.GetItemByName("TitaniumIngot") };
+        Item_Base[] glassItem = new Item_Base[] { ItemManager.GetItemByName("Glass") };
+        Item_Base[] redFlowerItem = new Item_Base[] { ItemManager.GetItemByName("Flower_Red") };
+        Item_Base[] blueFlowerItem = new Item_Base[] { ItemManager.GetItemByName("Flower_Blue") };
+        Item_Base[] nailItem = new Item_Base[] { ItemManager.GetItemByName("Nail") };
+        Item_Base[] scrapItem = new Item_Base[] { ItemManager.GetItemByName("Scrap") };
+        Item_Base[] plasticItem = new Item_Base[] { ItemManager.GetItemByName("Plastic") };
+        CreateRecipe(ItemManager.GetItemByName("DevSpear"), 1, new CostMultiple(metalItem, 60), new CostMultiple(copperItem, 40), new CostMultiple(titaniumItem, 20));
+        CreateRecipe(ItemManager.GetItemByName("Hat_Dev"), 1, new CostMultiple(glassItem, 2), new CostMultiple(redFlowerItem, 6), new CostMultiple(blueFlowerItem, 6), new CostMultiple(nailItem, 1), new CostMultiple(scrapItem, 2), new CostMultiple(plasticItem, 10));
+
+
         Debug.Log("Mod Craft Dev Items has been loaded!");
-        allowItems("");
-        allowItems2("");
-        allowItems3("");
-    }
-    private void allowItems(params string[] validItemNames)
-    {
-        var metalItem = ItemManager.GetItemByName("MetalIngot");
-        var metalIngredient = new CostMultiple(new Item_Base[] { metalItem }, 60);
-
-        var copperItem = ItemManager.GetItemByName("CopperIngot");
-        var copperIngredient = new CostMultiple(new Item_Base[] { copperItem }, 40);
-
-        var titaniumItem = ItemManager.GetItemByName("TitaniumIngot");
-        var titaniumIngredient = new CostMultiple(new Item_Base[] { titaniumItem }, 20);
-
-        var dev = ItemManager.GetItemByName("DevSpear");
-        dev.settings_recipe.NewCost = new CostMultiple[] { metalIngredient, copperIngredient, titaniumIngredient };
     }
 
-    private void allowItems2(params string[] validItemNames)
-    {
-        var plasticItem = ItemManager.GetItemByName("Plastic");
-        var plasticIngredient = new CostMultiple(new Item_Base[] { plasticItem }, 10);
-
-        var plastic = ItemManager.GetItemByName("BeachBall");
-        plastic.settings_recipe.NewCost = new CostMultiple[] { plasticIngredient };
-    }
-
-    private void allowItems3(params string[] validItemNames)
-    {
-        var glassItem = ItemManager.GetItemByName("Glass");
-        var glassIngredient = new CostMultiple(new Item_Base[] { glassItem }, 2);
-
-        var redItem = ItemManager.GetItemByName("Flower_Red");
-        var redIngredient = new CostMultiple(new Item_Base[] { redItem }, 6);
-
-        var blueItem = ItemManager.GetItemByName("Flower_Blue");
-        var blueIngredient = new CostMultiple(new Item_Base[] { blueItem }, 6);
-
-        var nailItem = ItemManager.GetItemByName("Nail");
-        var nailIngredient = new CostMultiple(new Item_Base[] { nailItem }, 1);
-
-        var scrapItem = ItemManager.GetItemByName("Scrap");
-        var scrapIngredient = new CostMultiple(new Item_Base[] { scrapItem }, 2);
-
-        var plasticItem = ItemManager.GetItemByName("Plastic");
-        var plasticIngredient = new CostMultiple(new Item_Base[] { plasticItem }, 10);
-
-        var hat = ItemManager.GetItemByName("DevHat");
-        hat.settings_recipe.NewCost = new CostMultiple[] { glassIngredient, redIngredient, blueIngredient, nailIngredient, scrapIngredient, plasticIngredient };
-    }
-
+    /// <summary>
+    /// Function creating a new recipe setting with new recipe.
+    /// </summary>
     /// <param name="pResultItem">Item resulting from the crafting.</param>
-    public static void CreateRecipe(Item_Base pResultItem, int pAmount)
+    /// <param name="pAmount">Crafting-Output Amount.</param>
+    /// <param name="pCosts">Crafting costs.</param>
+    public static void CreateRecipe(Item_Base pResultItem, int pAmount, params CostMultiple[] pCosts)
     {
-        Traverse.Create(pResultItem.settings_recipe).Field("craftingCategory").SetValue(CraftingCategory.Weapons);
-        Traverse.Create(pResultItem.settings_recipe).Field("amountToCraft").SetValue(pAmount);
-    }
-
-    public static void CreateRecipe1(Item_Base pResultItem, int pAmount)
-    {
+        Traverse.Create(pResultItem.settings_recipe).Field("newCostToCraft").SetValue(pCosts);
+        Traverse.Create(pResultItem.settings_recipe).Field("learned").SetValue(false);
+        Traverse.Create(pResultItem.settings_recipe).Field("learnedFromBeginning").SetValue(false);
         Traverse.Create(pResultItem.settings_recipe).Field("craftingCategory").SetValue(CraftingCategory.Other);
-        Traverse.Create(pResultItem.settings_recipe).Field("amountToCraft").SetValue(pAmount);
-    }
-
-    public static void CreateRecipe2(Item_Base pResultItem, int pAmount)
-    {
-        Traverse.Create(pResultItem.settings_recipe).Field("craftingCategory").SetValue(CraftingCategory.Equipment);
         Traverse.Create(pResultItem.settings_recipe).Field("amountToCraft").SetValue(pAmount);
     }
 
